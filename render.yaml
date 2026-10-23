@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: kidznest
+    runtime: node
+    plan: starter            # SQLite needs a persistent disk, which free plans don't offer
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    disk:
+      name: kidznest-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - { key: NODE_VERSION, value: "22" }
+      - { key: NODE_ENV, value: production }
+      - { key: DATA_DIR, value: /var/data }
+      - { key: BASE_URL, sync: false }
+      - { key: ADMIN_PASSWORD, sync: false }
+      - { key: STRIPE_SECRET_KEY, sync: false }
+      - { key: STRIPE_WEBHOOK_SECRET, sync: false }
+      - { key: ANTHROPIC_API_KEY, sync: false }
+      - { key: SMTP_HOST, sync: false }
+      - { key: SMTP_USER, sync: false }
+      - { key: SMTP_PASS, sync: false }
+      - { key: MAIL_FROM, sync: false }
+      - { key: OWNER_EMAIL, value: Kidznest01@yahoo.com }
